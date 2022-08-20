@@ -17,32 +17,40 @@ class MainView extends VerticalLayout {
 
     public MainView() {
 
-        Button button = new Button("Click here");
+        Button button = new Button("Show Result");
         HorizontalLayout hl = new HorizontalLayout();
         Label rubinLabel = new Label("Rubin");
         TextField textFieldRubin = new TextField("");
+        textFieldRubin.setReadOnly(true);
+        textFieldRubin.setVisible(false);
         Label babaLabel = new Label("Baba");
         TextField textFieldBaba = new TextField("");
+        textFieldBaba.setReadOnly(true);
+        textFieldBaba.setVisible(false);
         Label mummyLabel = new Label("Mummy");
         TextField textFieldMummy = new TextField("");
+        textFieldMummy.setReadOnly(true);
+        textFieldMummy.setVisible(false);
+        hl.add(rubinLabel,textFieldRubin,babaLabel,textFieldBaba,mummyLabel,textFieldMummy,button);
 
-
+        button.addClickListener(event->{textFieldRubin.setVisible(true);textFieldBaba.setVisible(true);textFieldMummy.setVisible(true);});
         TextArea textArea = new TextArea("");
         button.addClickListener(click -> textArea.setLabel("Rubin Paudel"));
         textArea.addKeyDownListener(keydown -> {
-                    int i = (int) (Math.random() * 100);
-                    rubinCount = i > 67 ? rubinCount + 1 : rubinCount;
-                    babaCount = i > 33 && i <= 67 ? babaCount + 1 : babaCount;
-                    mummyCount = i <= 33 ? mummyCount + 1 : mummyCount;
+                    int i = (int) (Math.random() * 10000);
+                    rubinCount = i > 6666 ? rubinCount + 1 : rubinCount;
+                    babaCount = i >= 3333 && i <= 6666 ? babaCount + 1 : babaCount;
+                    mummyCount = i < 3333 ? mummyCount + 1 : mummyCount;
                     textFieldRubin.setValue(rubinCount + "");
                     textFieldBaba.setValue(babaCount + "");
                     textFieldMummy.setValue(mummyCount + "");
-                    String text = i > 67 ? "Rubin Paudel" : i > 33 && i <= 67 ? "Krishna Paudel" : "Mummy";
+                    String text = i > 6666? "Rubin Paudel" : i >= 3333 && i <= 6666 ? "Krishna Paudel" : "Mummy";
                     textArea.setValue(textArea.getValue() + "\n" + text);
-                    i++;
                 }
         );
-        this.add(button, rubinLabel, textFieldRubin, babaLabel, textFieldBaba, mummyLabel, textFieldMummy, textArea);
+        HorizontalLayout horizontalLayout=new HorizontalLayout(textArea);
+        horizontalLayout.setHeight("500px");
+        this.add(hl, horizontalLayout);
     }
 
 
