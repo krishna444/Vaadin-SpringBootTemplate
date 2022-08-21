@@ -18,7 +18,7 @@ class MainView extends VerticalLayout {
     public MainView() {
 
         Button button = new Button("Show Result");
-        HorizontalLayout hl = new HorizontalLayout();
+        VerticalLayout vl = new VerticalLayout();
         Label rubinLabel = new Label("Rubin");
         TextField textFieldRubin = new TextField("");
         textFieldRubin.setReadOnly(true);
@@ -31,7 +31,7 @@ class MainView extends VerticalLayout {
         TextField textFieldMummy = new TextField("");
         textFieldMummy.setReadOnly(true);
         textFieldMummy.setVisible(false);
-        hl.add(rubinLabel,textFieldRubin,babaLabel,textFieldBaba,mummyLabel,textFieldMummy,button);
+        vl.add(rubinLabel,textFieldRubin,babaLabel,textFieldBaba,mummyLabel,textFieldMummy,button);
 
         button.addClickListener(event->{textFieldRubin.setVisible(true);textFieldBaba.setVisible(true);textFieldMummy.setVisible(true);});
         TextArea textArea = new TextArea("");
