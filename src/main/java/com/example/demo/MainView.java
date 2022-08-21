@@ -50,7 +50,7 @@ class MainView extends VerticalLayout {
         );
         HorizontalLayout horizontalLayout=new HorizontalLayout(textArea);
         horizontalLayout.setHeight("500px");
-        this.add(hl, horizontalLayout);
+        this.add(vl, horizontalLayout);
     }
 
 
