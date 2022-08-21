@@ -8,7 +8,7 @@ plugins {
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
+sourceCompatibility = '11'
 
 repositories {
 	mavenCentral()
@@ -16,6 +16,11 @@ repositories {
 
 ext {
 	set('vaadinVersion', "23.1.4")
+}
+
+war{
+	enabled=true
+	archiveName="demo.war"
 }
 
 dependencies {
@@ -34,4 +39,10 @@ dependencyManagement {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+task deploy(type: Copy) {
+	def WEBAPPS_HOME = '/opt/tomcat/default/webapps'
+	from 'build/libs/demo.war' into WEBAPPS_HOME
+	dependsOn war
 }
