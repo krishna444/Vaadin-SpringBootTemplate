@@ -9,7 +9,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-@PageTitle("Main")
+@PageTitle("Rubin's Game")
 @Route(value = "")
 class MainView extends VerticalLayout {
     private int rubinCount = 0, babaCount = 0, mummyCount = 0;
@@ -17,43 +17,46 @@ class MainView extends VerticalLayout {
 
     public MainView() {
         Button button = new Button("Show Result");
+        Button resetButton=new Button("Reset");
         VerticalLayout vl = new VerticalLayout();
         vl.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         vl.setWidthFull();
         Label rubinLabel = new Label("Rubin");
         TextField textFieldRubin = new TextField("");
         textFieldRubin.setReadOnly(true);
-        textFieldRubin.setVisible(false);
         HorizontalLayout rubinHL = new HorizontalLayout(rubinLabel, textFieldRubin);
+        rubinHL.setVisible(false);
         Label babaLabel = new Label("Baba");
         TextField textFieldBaba = new TextField("");
         textFieldBaba.setReadOnly(true);
-        textFieldBaba.setVisible(false);
         HorizontalLayout babaHL = new HorizontalLayout(babaLabel, textFieldBaba);
+        babaHL.setVisible(false);
         Label mummyLabel = new Label("Mummy");
         TextField textFieldMummy = new TextField("");
         textFieldMummy.setReadOnly(true);
-        textFieldMummy.setVisible(false);
         HorizontalLayout mummyHL = new HorizontalLayout(mummyLabel, textFieldMummy);
-        vl.add(rubinHL, babaHL, mummyHL, button);
+        mummyHL.setVisible(false);
 
         VerticalLayout resultHL = new VerticalLayout();
+        resultHL.setVisible(false);
         resultHL.setWidthFull();
         resultHL.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         Label winnerLabel = new Label("Winner: ");
-        TextField winnerTextField = new TextField("");
-        winnerTextField.getElement().getStyle().set("color", "red");
-        winnerTextField.getElement().getStyle().set("font-size", "26px");
-        resultHL.add(winnerLabel, winnerTextField);
-        vl.add(resultHL);
+        TextField textFieldWinner = new TextField("");
+        textFieldWinner.getElement().getStyle().set("color", "red");
+        textFieldWinner.getElement().getStyle().set("font-size", "26px");
+        resultHL.add(winnerLabel, textFieldWinner);
+        vl.add(rubinHL, babaHL, mummyHL, resultHL,button,resetButton);
 
         button.addClickListener(event -> {
-            textFieldRubin.setVisible(!this.showResult);
-            textFieldBaba.setVisible(!this.showResult);
-            textFieldMummy.setVisible(!this.showResult);
+            rubinHL.setVisible(!this.showResult);
+            babaHL.setVisible(!this.showResult);
+            mummyHL.setVisible(!this.showResult);
+            resultHL.setVisible(!this.showResult);
             this.showResult = !this.showResult;
             button.setText(this.showResult ? "Hide Result" : "Show Result");
         });
+
         TextArea textArea = new TextArea("");
         textArea.setHeight("450px");
         textArea.setWidthFull();
@@ -80,14 +83,24 @@ class MainView extends VerticalLayout {
                     textFieldMummy.setValue(mummyCount + "");
                     textArea.setValue(textArea.getValue() + "\t" + winner);
                     if (rubinCount > babaCount && rubinCount > mummyCount) {
-                        winnerTextField.setValue("Rubin");
+                        textFieldWinner.setValue("Rubin");
                     } else if (mummyCount > rubinCount && mummyCount > babaCount) {
-                        winnerTextField.setValue("Mummy");
+                        textFieldWinner.setValue("Mummy");
                     } else {
-                        winnerTextField.setValue("Baba");
+                        textFieldWinner.setValue("Baba");
                     }
                 }
         );
+        resetButton.addClickListener(event->{
+            rubinCount=0;
+            babaCount=0;
+            mummyCount=0;
+            textFieldRubin.setValue(rubinCount + "");
+            textFieldBaba.setValue(babaCount + "");
+            textFieldMummy.setValue(mummyCount + "");
+            textFieldWinner.setValue("");
+            textArea.setValue("");
+        });
         VerticalLayout infoVerticalLayout = new VerticalLayout(textArea);
         infoVerticalLayout.setHorizontalComponentAlignment(Alignment.CENTER, textArea);
         infoVerticalLayout.setWidthFull();
