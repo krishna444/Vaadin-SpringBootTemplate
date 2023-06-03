@@ -44,7 +44,7 @@ class MainView extends VerticalLayout {
                     textFieldRubin.setValue(rubinCount + "");
                     textFieldBaba.setValue(babaCount + "");
                     textFieldMummy.setValue(mummyCount + "");
-                    String text = i > 6666? "Rubin Paudel" : i >= 3333 && i <= 6666 ? "Krishna Paudel" : "Mummy";
+                    String text = i > 6666? "Rubin" : i >= 3333 && i <= 6666 ? "Krishna" : "Mummy";
                     textArea.setValue(textArea.getValue() + "\n" + text);
                 }
         );
