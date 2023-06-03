@@ -9,48 +9,90 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-
 @PageTitle("Main")
 @Route(value = "")
 class MainView extends VerticalLayout {
     private int rubinCount = 0, babaCount = 0, mummyCount = 0;
+    private boolean showResult = false;
 
     public MainView() {
-
         Button button = new Button("Show Result");
         VerticalLayout vl = new VerticalLayout();
+        vl.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
+        vl.setWidthFull();
         Label rubinLabel = new Label("Rubin");
         TextField textFieldRubin = new TextField("");
         textFieldRubin.setReadOnly(true);
         textFieldRubin.setVisible(false);
+        HorizontalLayout rubinHL = new HorizontalLayout(rubinLabel, textFieldRubin);
         Label babaLabel = new Label("Baba");
         TextField textFieldBaba = new TextField("");
         textFieldBaba.setReadOnly(true);
         textFieldBaba.setVisible(false);
+        HorizontalLayout babaHL = new HorizontalLayout(babaLabel, textFieldBaba);
         Label mummyLabel = new Label("Mummy");
         TextField textFieldMummy = new TextField("");
         textFieldMummy.setReadOnly(true);
         textFieldMummy.setVisible(false);
-        vl.add(rubinLabel,textFieldRubin,babaLabel,textFieldBaba,mummyLabel,textFieldMummy,button);
+        HorizontalLayout mummyHL = new HorizontalLayout(mummyLabel, textFieldMummy);
+        vl.add(rubinHL, babaHL, mummyHL, button);
 
-        button.addClickListener(event->{textFieldRubin.setVisible(true);textFieldBaba.setVisible(true);textFieldMummy.setVisible(true);});
+        VerticalLayout resultHL = new VerticalLayout();
+        resultHL.setWidthFull();
+        resultHL.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
+        Label winnerLabel = new Label("Winner: ");
+        TextField winnerTextField = new TextField("");
+        winnerTextField.getElement().getStyle().set("color", "red");
+        winnerTextField.getElement().getStyle().set("font-size", "26px");
+        resultHL.add(winnerLabel, winnerTextField);
+        vl.add(resultHL);
+
+        button.addClickListener(event -> {
+            textFieldRubin.setVisible(!this.showResult);
+            textFieldBaba.setVisible(!this.showResult);
+            textFieldMummy.setVisible(!this.showResult);
+            this.showResult = !this.showResult;
+            button.setText(this.showResult ? "Hide Result" : "Show Result");
+        });
         TextArea textArea = new TextArea("");
-        button.addClickListener(click -> textArea.setLabel("Rubin Paudel"));
+        textArea.setHeight("450px");
+        textArea.setWidthFull();
+        button.addClickListener(click -> textArea.setLabel("History"));
         textArea.addKeyDownListener(keydown -> {
                     int i = (int) (Math.random() * 10000);
-                    rubinCount = i > 6666 ? rubinCount + 1 : rubinCount;
-                    babaCount = i >= 3333 && i <= 6666 ? babaCount + 1 : babaCount;
-                    mummyCount = i < 3333 ? mummyCount + 1 : mummyCount;
+                    String result = i > 6666 ? "R" : i < 3333 ? "M" : "B";
+                    String winner = "";
+                    switch (result) {
+                        case "R":
+                            rubinCount++;
+                            winner = "Rubin";
+                            break;
+                        case "M":
+                            mummyCount++;
+                            winner = "Mummy";
+                            break;
+                        default:
+                            babaCount++;
+                            winner = "Baba";
+                    }
                     textFieldRubin.setValue(rubinCount + "");
                     textFieldBaba.setValue(babaCount + "");
                     textFieldMummy.setValue(mummyCount + "");
-                    String text = i > 6666? "Rubin" : i >= 3333 && i <= 6666 ? "Krishna" : "Mummy";
-                    textArea.setValue(textArea.getValue() + "\n" + text);
+                    textArea.setValue(textArea.getValue() + "\t" + winner);
+                    if (rubinCount > babaCount && rubinCount > mummyCount) {
+                        winnerTextField.setValue("Rubin");
+                    } else if (mummyCount > rubinCount && mummyCount > babaCount) {
+                        winnerTextField.setValue("Mummy");
+                    } else {
+                        winnerTextField.setValue("Baba");
+                    }
                 }
         );
-        HorizontalLayout horizontalLayout=new HorizontalLayout(textArea);
-        horizontalLayout.setHeight("500px");
-        this.add(vl, horizontalLayout);
+        VerticalLayout infoVerticalLayout = new VerticalLayout(textArea);
+        infoVerticalLayout.setHorizontalComponentAlignment(Alignment.CENTER, textArea);
+        infoVerticalLayout.setWidthFull();
+        //infoVerticalLayout.setMaxHeight("500px");
+        this.add(vl, infoVerticalLayout);
     }
 
 
