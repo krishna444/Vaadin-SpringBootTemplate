@@ -2,13 +2,13 @@ plugins {
 	id 'org.springframework.boot' version '2.7.2'
 	id 'io.spring.dependency-management' version '1.0.12.RELEASE'
 	id 'com.vaadin' version '23.1.4'
-	id 'java'
+	//id 'java'
 	id 'war'
 }
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
+sourceCompatibility = '11'
 
 repositories {
 	mavenCentral()
@@ -18,12 +18,18 @@ ext {
 	set('vaadinVersion', "23.1.4")
 }
 
+war{
+	enabled=true
+	archiveName="demo.war"
+}
+
 dependencies {
 	implementation 'com.vaadin:vaadin-spring-boot-starter'
-	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+	//providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+	//implementation 'org.springframework.boot:spring-boot-starter-tomcat'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation 'javax.servlet:javax.servlet-api:4.0.1'
 	implementation group: 'org.springframework.boot', name: 'spring-boot-devtools'
-
 }
 
 dependencyManagement {
@@ -34,4 +40,10 @@ dependencyManagement {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+task deploy(type: Copy) {
+	def WEBAPPS_HOME = '/opt/tomcat/default/webapps'
+	from 'build/libs/demo.war' into WEBAPPS_HOME
+	dependsOn war
 }
