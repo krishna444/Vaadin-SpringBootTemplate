@@ -20,8 +20,6 @@ war{
 
 dependencies {
 	implementation 'com.vaadin:vaadin-spring-boot-starter'
-	//providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
-	//implementation 'org.springframework.boot:spring-boot-starter-tomcat'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'javax.servlet:javax.servlet-api:4.0.1'
 	implementation group: 'org.springframework.boot', name: 'spring-boot-devtools'
