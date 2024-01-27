@@ -2,17 +2,12 @@ plugins {
 	id 'org.springframework.boot' version '2.7.2'
 	id 'io.spring.dependency-management' version '1.0.12.RELEASE'
 	id 'com.vaadin' version '23.1.4'
-	//id 'java'
 	id 'war'
 }
 
-group = 'com.example'
+group = 'com.kpaudel'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
-
-repositories {
-	mavenCentral()
-}
 
 ext {
 	set('vaadinVersion', "23.1.4")
@@ -20,7 +15,7 @@ ext {
 
 war{
 	enabled=true
-	archiveName="demo.war"
+	archiveName="game-demo.war"
 }
 
 dependencies {

@@ -13,11 +13,12 @@ import com.vaadin.flow.router.Route;
 @Route(value = "")
 class MainView extends VerticalLayout {
     private int rubinCount = 0, babaCount = 0, mummyCount = 0;
+    private int totalCount = 0;
     private boolean showResult = false;
 
     public MainView() {
         Button button = new Button("Show Result");
-        Button resetButton=new Button("Reset");
+        Button resetButton = new Button("Reset");
         VerticalLayout vl = new VerticalLayout();
         vl.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         vl.setWidthFull();
@@ -46,7 +47,13 @@ class MainView extends VerticalLayout {
         textFieldWinner.getElement().getStyle().set("color", "red");
         textFieldWinner.getElement().getStyle().set("font-size", "26px");
         resultHL.add(winnerLabel, textFieldWinner);
-        vl.add(rubinHL, babaHL, mummyHL, resultHL,button,resetButton);
+        vl.add(rubinHL, babaHL, mummyHL, resultHL, button, resetButton);
+
+        HorizontalLayout counterInfoHL = new HorizontalLayout();
+        Label counterLabel = new Label("Counter:");
+        TextField counterTextField = new TextField("");
+        counterInfoHL.add(counterLabel, counterTextField);
+
 
         button.addClickListener(event -> {
             rubinHL.setVisible(!this.showResult);
@@ -62,6 +69,8 @@ class MainView extends VerticalLayout {
         textArea.setWidthFull();
         button.addClickListener(click -> textArea.setLabel("History"));
         textArea.addKeyDownListener(keydown -> {
+                    totalCount++;
+                    counterTextField.setValue(Integer.toString(totalCount));
                     int i = (int) (Math.random() * 10000);
                     String result = i > 6666 ? "R" : i < 3333 ? "M" : "B";
                     String winner = "";
@@ -91,10 +100,12 @@ class MainView extends VerticalLayout {
                     }
                 }
         );
-        resetButton.addClickListener(event->{
-            rubinCount=0;
-            babaCount=0;
-            mummyCount=0;
+        resetButton.addClickListener(event -> {
+            rubinCount = 0;
+            babaCount = 0;
+            mummyCount = 0;
+            totalCount = 0;
+            counterTextField.setValue(totalCount + "");
             textFieldRubin.setValue(rubinCount + "");
             textFieldBaba.setValue(babaCount + "");
             textFieldMummy.setValue(mummyCount + "");
@@ -105,7 +116,7 @@ class MainView extends VerticalLayout {
         infoVerticalLayout.setHorizontalComponentAlignment(Alignment.CENTER, textArea);
         infoVerticalLayout.setWidthFull();
         //infoVerticalLayout.setMaxHeight("500px");
-        this.add(vl, infoVerticalLayout);
+        this.add(vl, counterInfoHL, infoVerticalLayout);
     }
 
 
