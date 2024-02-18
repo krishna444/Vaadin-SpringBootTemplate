@@ -12,13 +12,13 @@ import org.springframework.core.env.Environment;
 @PageTitle("Tic-Tac-Toe")
 @Route("/tic-tac-toe")
 public class TicTacToe extends VerticalLayout {
-    private Environment environment;
+    private final Environment environment;
 
-    private String player1;
-    private String player2;
+    private final String player1;
+    private final String player2;
 
-    private String none;
-    private String[][] board; // the game board
+    private final String none;
+    private final String[][] board; // the game board
     private String currentPlayer; // the current player (X or O)
     private boolean gameOver; // flag to indicate if the game is over
 
@@ -61,10 +61,8 @@ public class TicTacToe extends VerticalLayout {
         }
 
         HorizontalLayout resetButtonLayout = new HorizontalLayout();
-        Button resetButton = new Button("Reset1");
-        resetButton.addClickListener(e -> {
-            resetGame(buttons);
-        });
+        Button resetButton = new Button("Reset");
+        resetButton.addClickListener(e -> resetGame(buttons));
         resetButtonLayout.add(resetButton);
         add(resetButtonLayout);
     }
@@ -87,7 +85,7 @@ public class TicTacToe extends VerticalLayout {
 
     // this method handles a move by the current player at the given row and column
     private void move(int row, int col, Button[][] buttons) {
-        if (!gameOver && board[row][col] == this.none) { // if the game is not over and the cell is empty
+        if (!gameOver && board[row][col] .equals(this.none)) { // if the game is not over and the cell is empty
             board[row][col] = currentPlayer; // mark the cell with the current player's symbol
             buttons[row][col].setText(String.valueOf(currentPlayer)); // update the button text
             if (isWinningMove(row, col)) { // check if the move is a winning move
@@ -98,7 +96,7 @@ public class TicTacToe extends VerticalLayout {
                 Notification.show("It's a tie!", 3000, Notification.Position.MIDDLE); // show a notification
             } else {
                 // switch the current player
-                currentPlayer = (currentPlayer == this.player1) ? this.player2 : this.player1;
+                currentPlayer = (currentPlayer.equals(this.player1)) ? this.player2 : this.player1;
             }
         }
     }
@@ -107,7 +105,7 @@ public class TicTacToe extends VerticalLayout {
     private boolean isBoardFull() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (board[i][j] == " ") {
+                if (board[i][j].equals(" ")) {
                     return false;
                 }
             }
@@ -118,19 +116,19 @@ public class TicTacToe extends VerticalLayout {
     // this method checks if the move at the given row and column is a winning move
     private boolean isWinningMove(int row, int col) {
         // check the row
-        if (board[row][0] == board[row][1] && board[row][1] == board[row][2]) {
+        if (board[row][0].equals(board[row][1]) && board[row][1].equals(board[row][2])) {
             return true;
         }
         // check the column
-        if (board[0][col] == board[1][col] && board[1][col] == board[2][col]) {
+        if (board[0][col].equals(board[1][col]) && board[1][col].equals(board[2][col])) {
             return true;
         }
         // check the main diagonal
-        if (row == col && board[0][0] == board[1][1] && board[1][1] == board[2][2]) {
+        if (row == col && board[0][0].equals(board[1][1]) && board[1][1].equals(board[2][2])) {
             return true;
         }
         // check the secondary diagonal
-        if (row + col == 2 && board[0][2] == board[1][1] && board[1][1] == board[2][0]) {
+        if (row + col == 2 && board[0][2].equals(board[1][1]) && board[1][1].equals(board[2][0])) {
             return true;
         }
         // otherwise, not a winning move
